@@ -6,34 +6,29 @@
   <meta name="description" content="{{ site.description }}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* Reset básico */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f2f5;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background-color: #fefefe;
       color: #333;
-      line-height: 1.6;
+      margin: 0;
+      line-height: 1.7;
     }
 
     header {
-      background-color: #1f2937;
-      color: #fff;
+      background-color: #0d47a1;
+      color: white;
       padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
 
     header h1 {
-      font-size: 1.8rem;
+      font-size: 2rem;
+      margin: 0;
     }
 
     nav a {
-      color: #fff;
-      margin-left: 1.5rem;
+      color: white;
+      margin-left: 1.2rem;
       text-decoration: none;
-      font-weight: 500;
     }
 
     nav a:hover {
@@ -44,20 +39,22 @@
       max-width: 900px;
       margin: 2rem auto;
       padding: 2rem;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
     h1, h2, h3 {
-      color: #111827;
-      margin-bottom: 0.5rem;
+      color: #0d47a1;
+      margin-top: 1.5rem;
     }
 
-    h2 { margin-top: 1.5rem; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.5rem; }
+    h3 { font-size: 1.2rem; }
 
     a {
-      color: #2563eb;
+      color: #1565c0;
       text-decoration: none;
     }
 
@@ -67,10 +64,10 @@
 
     footer {
       text-align: center;
+      margin-top: 3rem;
       padding: 1rem;
-      margin-top: 2rem;
       font-size: 0.9rem;
-      color: #6b7280;
+      color: #555;
     }
   </style>
 </head>
@@ -79,7 +76,8 @@
     <h1>{{ site.title }}</h1>
     <nav>
       <a href="/">Home</a>
-      <a href="/Linux/index.md">Linux</a>
+      <a href="/Linux/">Linux</a>
+      <a href="/Windows/">Windows</a>
     </nav>
   </header>
 
@@ -88,7 +86,7 @@
   </main>
 
   <footer>
-    © {{ "now" | date: "%Y" }} {{ site.title }}. All rights reserved.
+    © {{ "now" | date: "%Y" }} {{ site.title }}.
   </footer>
 </body>
 </html>
