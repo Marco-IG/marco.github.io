@@ -40,6 +40,7 @@ For enp0s3 (the bridged adapter):
   
       --> Name servers: 8.8.8.8, 8.8.4.4
 
+
 ![](../images/3.png)
 <br/>
 
@@ -52,6 +53,8 @@ For enp0s8 (the internal adapter):
       --> Gateway: 192.168.1.100
   
       --> Name servers: 8.8.8.8, 8.8.4.4
+
+
 <br/>
 ![](../images/4.png)
 <br/>
