@@ -15,3 +15,4 @@ I hope you enjoy this blog! The very first project I'm going to tackle is a Linu
 
 
 ## Sections
+- [Linux](Linux/linux_intro.md)
