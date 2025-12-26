@@ -80,6 +80,7 @@ It allows you to log in, execute commands, and transfer files safely using encry
       $ ssh -p [port of the server] [user]@[server_address]
 <br/>
 <br/>
+
 The server address should be the IP and the user should be the user we could use in the server. The port, well, it's going to be 22, the SSH default port.
 
 
