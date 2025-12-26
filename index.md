@@ -1,7 +1,6 @@
----
-layout: default
+
 title: "Nombre del tutorial o sección"
----
+
 
 ## Introduction to myself
 
