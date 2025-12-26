@@ -1,5 +1,5 @@
 ---
-layout: default
+title: Introduction
 ---
 
 # Introduction to myself
