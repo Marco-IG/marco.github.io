@@ -23,3 +23,12 @@ After the explanation, before installing the distro we have to give our router t
 
 ![](../images/1.png)
 ![](../images/2.png)
+
+After that we got to install everything. I'm not going to show everything about the installation process so I'm going to show you the configuration of the network and leave the rest up to you.
+
+My configuration is this one (remember to change every adapter to manual, because DHCP is on by default):
+For enp0s3 (the bridged adapter):
+  --> Subnet: 192.168.0.0/21
+  --> Address: 192.168.1.100
+  --> Gateway: 192.168.1.1
+  --> Name servers: 8.8.8.8, 8.8.4.4
