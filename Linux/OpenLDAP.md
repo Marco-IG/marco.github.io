@@ -52,3 +52,14 @@ For enp0s8 (the internal adapter):
       --> Name servers: 8.8.8.8, 8.8.4.4
 
 ![](../images/4.png)
+
+
+
+After the installation we could use netplan, but... What is it?
+Well, Netplan is a network configuration tool used in modern Ubuntu systems.
+It uses YAML files in **/etc/netplan/** to set up network interfaces, including IP addresses, DHCP, gateways, and DNS.
+
+
+It works with NetworkManager or systemd-networkd to apply the network settings.
+
+Right now we don't want to touch anything related to netplan but im
