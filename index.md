@@ -1,3 +1,8 @@
+---
+layout: default
+title: "Título de la página"
+---
+
 # Introduction to myself
 
 Hello everyone reading my blog!  
