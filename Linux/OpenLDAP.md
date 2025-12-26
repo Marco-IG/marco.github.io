@@ -1,3 +1,4 @@
+# OpenLDAP server on Linux
 ## Introduction
 What you're expecting is some kind of step-by-step tutorial for an OpenLDAP server but I won't do that. The main reason we are here is to learn what is an OpenLDAP server and how to create our own lab to work on.
 
