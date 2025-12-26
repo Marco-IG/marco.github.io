@@ -1,4 +1,8 @@
-## Introduction to myself
+---
+title: ""
+---
+
+# Introduction to myself
 
 Hello everyone reading my blog!  
 
@@ -10,4 +14,4 @@ I hope you enjoy this blog! The very first project I'm going to tackle is a Linu
 
 
 
-## Sections
+# Sections
