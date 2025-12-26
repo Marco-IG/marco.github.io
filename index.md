@@ -1,8 +1,5 @@
----
-title: ""
----
 
-# Introduction to myself
+## Introduction to myself
 
 Hello everyone reading my blog!  
 
