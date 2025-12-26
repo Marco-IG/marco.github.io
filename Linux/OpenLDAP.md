@@ -52,7 +52,7 @@ For enp0s8 (the internal adapter):
       --> Gateway: 192.168.1.100
   
       --> Name servers: 8.8.8.8, 8.8.4.4
-
+<br/>
 ![](../images/4.png)
 <br/>
 <br/>
@@ -68,6 +68,7 @@ It uses YAML files in **/etc/netplan/** to set up network interfaces, including 
 It works with NetworkManager or systemd-networkd to apply the network settings.
 
 Right now we don't want to touch anything related to netplan but I'm going to show you how it looks like right now:
+<br/><br/>
 ![](../images/5.png)
 
 <br/>
@@ -91,6 +92,7 @@ The next think we got to do is enable IP forwarding permanently. Here is a brief
   --> The FORWARD chain in iptables/nftables handles packets that are being routed through the system, so enabling IP forwarding allows these packets to actually pass through the router.
  
  To make this change permanent (so it stays active after reboot), we edit the sysctl.conf file (/etc/sysctl.conf). This file contains kernel settings that Linux applies at startup. So we just open the file and then, look for the line containing net.ipv4.ip_forward and set it to 1:
+ <br/><br/>
  ![](../images/6.png)
 
  
