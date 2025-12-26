@@ -40,7 +40,6 @@ For enp0s3 (the bridged adapter):
 
 ![](../images/3.png)
 <br/>
-<br/>
 
 For enp0s8 (the internal adapter):
       
@@ -53,6 +52,7 @@ For enp0s8 (the internal adapter):
       --> Name servers: 8.8.8.8, 8.8.4.4
 
 ![](../images/4.png)
+<br/>
 <br/>
 <br/>
 
