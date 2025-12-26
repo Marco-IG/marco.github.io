@@ -9,3 +9,7 @@ Expect some real hands-on stuff: setting up servers, tweaking configurations, an
 Whether you’re a fellow beginner or just looking for practical examples, this section is for you.  
 
 Let’s start exploring Linux together.
+<br/><br/>
+
+# Sections
+- [Creation of a Virtual Router](router.md)
