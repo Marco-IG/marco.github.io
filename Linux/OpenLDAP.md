@@ -16,7 +16,8 @@ Requirements:
 If you want to create the VMs on VirtualBox, you can go for it (I'm going to show how to do it on this program). You can use Proxmox or VMware if It fits you the most, but take in account that proxmox will need and entire pc with decent specifications.
 
 ### Virtual Router
-First of all I'm going to explain why we are doing this. Well, we could just use our own router but to be more flexible and just to make it a bit harder we are going to crete our own router to route traffic. Why? Because we can control everything: firewall, traffic, routing tables...
+First of all I'm going to explain why we are doing this. Well, we could just use our own router but to be more flexible and just to make it a bit harder we are going to create our own router to route traffic. Why? Because we can control everything: firewall, traffic, routing tables...
+The other thing I would like to show is how NAT works, because by the time we create the rest of the servers inside our LAN we would like to make them go outside of the LAN and connect with Internet, so we will need iptables (maybe we will learn nftables, a modern version of iptables).
 
 After the explanation, before installing the distro we have to give our router two network adapters:
 1. Bridged
@@ -66,4 +67,30 @@ It uses YAML files in **/etc/netplan/** to set up network interfaces, including 
 
 It works with NetworkManager or systemd-networkd to apply the network settings.
 
-Right now we don't want to touch anything related to netplan but im
+Right now we don't want to touch anything related to netplan but I'm going to show you how it looks like right now:
+![](../images/5.png)
+
+<br/>
+<br/>
+
+After that we should install SSH just to facilitate the use of the terminal. If you don't know already, SSH (Secure Shell) is a protocol used to securely connect to remote computers over a network.
+It allows you to log in, execute commands, and transfer files safely using encryption. It is commonly used by system administrators and developers to manage servers and virtual machines. The syntax is pretty simple:
+      
+      $ ssh -p [port of the server] [user]@[server_address]
+<br/>
+<br/>
+The server address should be the IP and the user should be the user we could use in the server. The port, well, it's going to be 22, the SSH default port.
+
+
+Installing SSH is easy because you just need **$ sudo apt install ssh -y**.
+
+The next think we got to do is enable IP forwarding permanently. Here is a brief explanation about this:
+
+  --> IP forwarding is a setting in the Linux kernel that allows the router to send network packets from one network interface to another. Without it, the router will receive packets from the client but won’t forward them to the Internet.
+
+  --> The FORWARD chain in iptables/nftables handles packets that are being routed through the system, so enabling IP forwarding allows these packets to actually pass through the router.
+ 
+ To make this change permanent (so it stays active after reboot), we edit the sysctl.conf file (/etc/sysctl.conf). This file contains kernel settings that Linux applies at startup. So we just open the file and then, look for the line containing net.ipv4.ip_forward and set it to 1:
+ ![](../images/6.png)
+
+ 
