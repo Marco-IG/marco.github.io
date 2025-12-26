@@ -12,4 +12,4 @@ Let’s start exploring Linux together.
 <br/><br/>
 
 # Sections
-- [Creation of a Linux OpenLDAP server](OpenLDAP.md)
+- [Creation of a Linux OpenLDAP server](./OpenLDAP.md)
