@@ -21,4 +21,5 @@ After the explanation, before installing the distro we have to give our router t
 1. Bridged
 2. Internal red (the name is up to you, I'm going to leave it on default)
 
-![](../images/1)
+![](../images/1.png)
+![](../images/2.png)
