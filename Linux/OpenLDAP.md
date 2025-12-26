@@ -56,6 +56,7 @@ For enp0s8 (the internal adapter):
 
 
 <br/>
+
 ![](../images/4.png)
 <br/>
 <br/>
