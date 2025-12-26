@@ -29,6 +29,9 @@ After that we got to install everything. I'm not going to show everything about 
 My configuration is this one (remember to change every adapter to manual, because DHCP is on by default):
 For enp0s3 (the bridged adapter):
   --> Subnet: 192.168.0.0/21
+  
   --> Address: 192.168.1.100
+  
   --> Gateway: 192.168.1.1
+  
   --> Name servers: 8.8.8.8, 8.8.4.4
