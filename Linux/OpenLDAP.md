@@ -78,6 +78,8 @@ After that we should install SSH just to facilitate the use of the terminal. If 
 It allows you to log in, execute commands, and transfer files safely using encryption. It is commonly used by system administrators and developers to manage servers and virtual machines. The syntax is pretty simple:
       
       $ ssh -p [port of the server] [user]@[server_address]
+
+
 <br/>
 <br/>
 
