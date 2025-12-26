@@ -1,6 +1,5 @@
 ---
 layout: default
-title: "Título de la página"
 ---
 
 # Introduction to myself
