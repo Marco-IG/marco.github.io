@@ -165,10 +165,11 @@ At the end of the configuration file, we add the following lines:
               range 10.0.0.10 10.0.0.50;
               option routers 10.0.0.1;
               option domain-name-servers 8.8.8.8, 8.8.4.4;
-              option domain-name "red-local.lan";
               default-lease-time 600;
               max-lease-time 7200;
       }
+
+![](../images/8.png)
 
 
 
@@ -177,7 +178,15 @@ This block defines the DHCP settings for your internal network:
 2. **range 10.0.0.10 10.0.0.50** defines the pool of addresses that clients can receive dynamically.
 3. **option routers 10.0.0.1** sets the default gateway for the clients (usually the router).
 4. **option domain-name-servers 8.8.8.8, 8.8.4.4** tells clients which DNS servers to use.
-5. **option domain-name "red-local.lan"** assigns a domain name for the internal network.
-6. **default-lease-time 600 and max-lease-time 7200** define the lease duration in seconds (how long a client can keep the assigned IP).
+5. **default-lease-time 600 and max-lease-time 7200** define the lease duration in seconds (how long a client can keep the assigned IP).
 
 In short, this configuration ensures that any device connecting to your internal LAN automatically receives an IP address, gateway, and DNS settings, making network management much simpler.
+
+After saving the configuration we need to edit the iscp-dhcp-server file located in the /etc/default directory. This file is used to set default parameters for the DHCP server service. It specifies which network interfaces the DHCP server should listen on, and can include other startup options. Editing this file ensures that when the DHCP service starts, it knows exactly which network interface(s) to manage, so it only assigns IP addresses to clients on your internal LAN and avoids affecting other networks. Essentially, it acts as a bridge between your system’s configuration and the running DHCP service.
+
+From there, in the line INTERFACESv4="", we will specify the network interface on which the DHCP server should “listen” and offer IP addresses to clients that send requests for an IP. In my case, the machine’s interface is enp0s3.
+
+![](../images/9.png)
+
+
+So now our DHCP server is fully configured. We could assign static IPs if needed, but at the moment it’s not necessary since we don’t have any clients or servers that require a fixed IP address.
