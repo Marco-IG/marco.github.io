@@ -144,3 +144,40 @@ The network configuration is going to be this one:
 
 
 ![](../images/7.png)
+
+
+Next, we will install the ISC DHCP server software (developed by the open-source organization ISC) so that we can begin configuring our DHCP server.
+
+      $ sudo apt update
+      $ sudo apt install isc-dhcp-server -y
+
+If you want to look at the status of the service you could use this command:
+
+      $ sudo systemctl status isc-dhcp-server
+
+
+After installing the software, we need to configure the server so that it can start assigning dynamic IP addresses to devices on the network. To do this, we will edit the dhcpd.conf file located in the /etc/dhcp directory, where all the main settings for the DHCP server are defined, including the IP address range, subnet mask, gateway, and DNS servers. This configuration file is essential because it tells the server how to manage and distribute network settings to clients automatically.
+
+At the end of the configuration file, we add the following lines:
+      
+      # Subnet configuration for the internal network (10.0.0.0/24)
+      subnet 10.0.0.0 netmask 255.255.255.0 {
+              range 10.0.0.10 10.0.0.50;
+              option routers 10.0.0.1;
+              option domain-name-servers 8.8.8.8, 8.8.4.4;
+              option domain-name "red-local.lan";
+              default-lease-time 600;
+              max-lease-time 7200;
+      }
+
+
+
+This block defines the DHCP settings for your internal network:
+1. **subnet 10.0.0.0 netmask 255.255.255.0** specifies the network where the DHCP server will assign IPs.
+2. **range 10.0.0.10 10.0.0.50** defines the pool of addresses that clients can receive dynamically.
+3. **option routers 10.0.0.1** sets the default gateway for the clients (usually the router).
+4. **option domain-name-servers 8.8.8.8, 8.8.4.4** tells clients which DNS servers to use.
+5. **option domain-name "red-local.lan"** assigns a domain name for the internal network.
+6. **default-lease-time 600 and max-lease-time 7200** define the lease duration in seconds (how long a client can keep the assigned IP).
+
+In short, this configuration ensures that any device connecting to your internal LAN automatically receives an IP address, gateway, and DNS settings, making network management much simpler.
