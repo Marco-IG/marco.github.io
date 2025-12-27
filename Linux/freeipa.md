@@ -212,4 +212,7 @@ Lo último que deberíamos hacer es resetear el servicio y la máquina, y tras e
       $ sudo systemctl restart isc-dhpc-service
 
 
-I'm not going to show anything related to the fixed IP because it's not necessary for the OpenLDAP, but you got to know that even if you configure the IP of the client manually or you put it on automatic, you should fix the address in the DHCP server, so it won't produce erros or problems if any other device recive the same IP. Just as advice.
+I'm not going to show anything related to the fixed IP because it's not necessary for the FreeIPA, but you got to know that even if you configure the IP of the client manually or you put it on automatic, you should fix the address in the DHCP server, so it won't produce erros or problems if any other device recive the same IP. Just as advice.
+
+
+### FreeIPA Server
