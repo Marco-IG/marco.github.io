@@ -216,3 +216,4 @@ I'm not going to show anything related to the fixed IP because it's not necessar
 
 
 ### FreeIPA Server
+Now we are going to create our IPA server. We need CentOS because IPA has better compatibility with this distro rather than with Ubuntu server.
