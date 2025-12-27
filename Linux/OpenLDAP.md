@@ -102,4 +102,16 @@ The next think we got to do is enable IP forwarding permanently. Here is a brief
  <br/><br/>
  ![](../images/6.png)
 
- 
+
+After this, we simply apply the updated system parameters without needing to reboot the router. We do this by running:
+
+      $ sudo sysctl -p
+
+
+Next, we need to create an iptables rule that allows packets from the servers (we will create them after this) to reach the external network and receive responses back through the router. In other words, we want the router to perform NAT so that internal devices can access the outside network using the router’s external IP address. To do this, we add the following rule and we keep it permanent:
+            
+      $ sudo iptables -t nat -A POSTROUTING -o enp0s3 -j SNAT --to-source 192.168.1.100
+      $ sudo netfilter-persistent save
+
+
+
