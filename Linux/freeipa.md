@@ -1,12 +1,12 @@
-# OpenLDAP server on Linux
+# FreeIPA server on Linux
 ### Introduction
-What you're expecting is some kind of step-by-step tutorial for an OpenLDAP server but I won't do that. The main reason we are here is to learn what is an OpenLDAP server and how to create our own lab to work on.
+What you're expecting is some kind of step-by-step tutorial for an OpenLDAP server but I won't do that. The main reason we are here is to learn what is an FreeIPA server and how to create our own lab to work on.
 
 The things we are going to do here:
 - A virtual router
 - A DHCP server
-- A DNS server
-- An OpenLDAP server
+- A FreeIPA server
+- 2 clients
 
 Everything We are going to do will be hosted on Ubuntu server 24.04. You can do this on another distro if you want but I did this before on this distro so I'm comfortable with it.
 Requirements:
