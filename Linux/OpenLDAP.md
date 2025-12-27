@@ -110,7 +110,7 @@ After this, we simply apply the updated system parameters without needing to reb
       $ sudo sysctl -p
 
 
-Next, we need to create an iptables rule that allows packets from the servers (we will create them after this) to reach the external network and receive responses back through the router. In other words, we want the router to perform NAT so that internal devices can access the outside network using the router’s external IP address. To do this, we add the following rule and we keep it permanent:
+Next, we need to create an iptables rule that allows packets from the servers (we will create them after this) to reach the external network and receive responses back through the router. In other words, we want the router to perform NAT so that internal devices can access the outside network using the router’s external IP address. To do this, we add the following rule and we keep it permanent (remember to install **iptables-persistent** to use netfilter-persistent):
             
       $ sudo iptables -t nat -A POSTROUTING -o enp0s3 -j SNAT --to-source 192.168.1.100
       $ sudo netfilter-persistent save
@@ -129,3 +129,18 @@ DHCP (Dynamic Host Configuration Protocol) is the service responsible for automa
 When a client connects, it sends out a broadcast request asking for network configuration. The DHCP server listens for that request and responds with a lease — a temporary set of network parameters the client can use. This makes network management simpler, prevents IP conflicts, and allows devices to join the network instantly without any manual setup.
 
 In short, DHCP is what allows your devices to “plug in and work” by automatically configuring their network settings.
+
+So by now we are going to create the DHCP server. Just remember, the adapter has to be on internal mode.
+
+The network configuration is going to be this one:
+      
+      --> Subnet: 10.0.0.0/24
+  
+      --> Address: 10.0.0.2
+  
+      --> Gateway: 10.0.0.1
+  
+      --> Name servers: 8.8.8.8, 8.8.4.4
+
+
+![](../images/7.png)
