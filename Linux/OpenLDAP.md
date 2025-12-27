@@ -190,3 +190,26 @@ From there, in the line INTERFACESv4="", we will specify the network interface o
 
 
 So now our DHCP server is fully configured. We could assign static IPs if needed, but at the moment it’s not necessary since we don’t have any clients or servers that require a fixed IP address.
+Before we go to the DNS server I'm going to explain to you how you can fix an IP address to any client but I won't go too deep.
+
+
+First of all, we need the MAC address for it. If you still don’t know what a MAC address is, it stands for Media Access Control address, a unique identifier assigned to the network interface of every device. Think of it like a device’s fingerprint on the network. The DHCP server uses this MAC address to recognize the device and, if configured, assign it a specific IP address every time it connects. To get it we need the commando **$ ip a**. After this, We will look for the line link/ether, which contains the MAC address of the machine. We will need this address later to manually assign a static IP to this client from the DHCP server. The client’s MAC address is 08:00:27:6b:50:8b.
+
+
+After this, we will configure a new entry in the dhcpd.conf file located in /etc/dhcp. The entry is as follows:
+      
+      host client {
+        hardware ethernet 08:00:27:6b:50:8b;
+        fixed-address 10.0.0.55;
+        option routers 10.0.0.1;
+        option subnet-mask 255.255.255.0;
+      }
+
+This line in the dhcpd.conf file creates a static IP reservation. The host client block tells the DHCP server that the device named "client" should receive a special configuration. The server uses the device’s MAC address (hardware ethernet) to uniquely identify it. When the client connects, the server always assigns it the same predefined IP address (fixed-address 10.0.0.55) instead of an address from the dynamic range.
+
+Lo último que deberíamos hacer es resetear el servicio y la máquina, y tras esto ya tendríamos el cliente con su nueva IP. Para resetear el servicio:
+      
+      $ sudo systemctl restart isc-dhpc-service
+
+
+I'm not going to show anything related to the fixed IP because it's not necessary for the OpenLDAP, but you got to know that even if you configure the IP of the client manually or you put it on automatic, you should fix the address in the DHCP server, so it won't produce erros or problems if any other device recive the same IP. Just as advice.
