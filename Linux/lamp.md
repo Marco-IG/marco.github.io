@@ -21,8 +21,8 @@ For enp0s3 (the bridged adapter):
       
       --> Subnet: 10.0.0.0/24
   
-      --> Address: 10.0.0.
+      --> Address: 10.0.0.60
   
-      --> Gateway: 192.168.1.1
+      --> Gateway: 10.0.0.1
   
       --> Name servers: 8.8.8.8, 8.8.4.4
