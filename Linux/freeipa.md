@@ -401,3 +401,96 @@ In the file **resolv.conf** we are going to write this few things:
 
 I decided not to add the replica's IP to the DNS settings yet because the services aren't installed yet, so it’s better to let the machine point only to the Master for now. Once the installation is finished, we can add the replica's own IP as a secondary DNS source right after the Master's IP. This setup is what gives us High Availability: if the Master ever fails or goes offline, the replica can step in and handle the requests itself so the network doesn't go down.
 
+The next thing we have to do is install chrony to syncronize the times between "ipa1" and "ipa2":
+
+      # yum install chrony -y
+
+
+After the installation we have to open up the file **chrony.conf** inside the dir. **etc** and write down this line at the end of the file:
+
+      server 10.0.0.3 iburst
+
+
+In the replica's configuration, adding server 10.0.0.3 iburst tells ipa2 to use the Master server as its primary source of time through the NTP protocol. The iburst option is key because it forces a quick synchronization right at startup, ensuring the clocks match perfectly before the installation begins. This is mandatory because Kerberos will block the replica from joining the domain if its clock is even slightly different from the Master's.
+
+After this, if we use the command **# chronyc tracking** on the replica, it should show up with information about the time, and most important, the reference ID which should have in a bracket **ipa1.lab.local**.
+
+![](../images/40.png)
+
+The next thing is to add a line in the dns direct and inverse zone of the master server so everything works fine when somebody wants to know the replica via the master DNS.
+
+We are going to use this to commands to add the lines:
+
+      # ipa dnsrecord-add lab.local ipa2 --a-rec 10.0.0.4
+      # ipa dnsrecord-add 0.0.10.in-addr.arpa 4 --ptr-rec ipa2.lab.local.
+
+
+After adding the lines, we have to open the ports in the replica because it will be necessary to copy everything from the master to the replica. Just use the previous command for the master:
+
+      # firewall-cmd --add-service=freeipa-4 --permanent
+      # firewall-cmd --reload
+
+
+Now we can do the duplication of the master into the replica, just use this command and everything will be fine:
+
+      # ipa-replica-install --unattended --setup-ca --setup-dns --hostname=ipa2.lab.local --ip-address=10.0.0.4 --principal=admin --password=ipa2_admin_lab --auto-forwarders --skip-conncheck
+
+<br/>
+
+This flags do this on the installation:
+
+- **--unattended:** This tells the installer to "just do it" without stopping to ask me questions. Since we’ve pre-configured everything, we don’t need to manually confirm every step.
+- **--setup-ca & --setup-dns:** These are vital for High Availability. They tell the replica to not only copy the user database but also become its own Certificate Authority and DNS server. If the Master dies, this server can still issue certificates and resolve names.
+- **--hostname & --ip-address:** This defines the identity of our new server (ipa2.lab.local at 10.0.0.4).
+- **--principal & --password:** These are the credentials of the Master’s admin. The replica uses these to "introduce" itself to the Master and prove it has permission to join the domain.
+- **--auto-forwarders:** This automatically grabs the DNS forwarders from the Master, so the replica knows how to reach the outside internet.
+- **--skip-conncheck:** We use this because we’ve already manually verified our network and hosts file. It speeds up the process by skipping the basic connection tests.
+
+<br>
+
+The installation will begin unattended thanks to the option we used (--unattended). After everything is done, if we want to check if everything is fine, we should use **kinit** with the admin and maybe use this command (just to be secure) in the replica:
+
+      # ipa-replica-conncheck --replica ipa1.lab.local
+
+
+Last thing we should do is add the IP of the master again in the slave resolv.conf file, because it is necessary for domain consistency, so the lines should look like this in the slave:
+
+      search lab.local
+      nameserver 127.0.0.1
+      nameserver 10.0.0.3
+
+<br>
+
+Now we have to create the client and make it part of the domain. We are going to install a CentOS with GUI and after that we need to configure the network the same way as the photo:
+
+![](../images/28.png)
+
+The thing is, we put only the master dns here to ensure the client connect to the private domain server and its packets don't get lost because of using google's public domain server due to using 8.8.8.8 or 8.8.4.4
+
+After this we have to set the hostname to **client1.lab.local**.
+
+We modify the /etc/hosts file, mapping the Master's IP address to its FQDN to ensure proper name resolution. It must contain a line like this:
+
+      10.0.0.3      ipa1.lab.local      ipa1
+
+<br/>
+
+Later on we have to get the client package pulling it from the repo and the chrony one:
+
+      # yum install freeipa-client -y
+      # yum install chrony -y
+
+<br/>
+
+After this we use this command and after answering the questions needed we will be connected to the directory and that's it.
+
+If something goes wrong with the NTP, ensure that the configuration on the client is correct and check that the chrony.conf file has the source pointing to both servers, the master and its replica. It should contain this two lines:
+
+      server 10.0.0.3 iburst
+      server 10.0.0.4 iburst
+
+<br/>
+
+If not, add these lines and reset everything with:
+
+      # systemctl enable --now chronyd
