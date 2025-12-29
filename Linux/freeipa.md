@@ -276,3 +276,27 @@ In FreeIPA, this relationship is vital because:
 
 
 In short, changing the hostname ensures that your server has a unique and permanent identity so the entire network knows exactly who it is talking to.
+
+After changing the hostname we will need to change the file **hosts** inside the dir. **/etc/**. Why we need to do this? Well, even though we told the computer its name, it still needs a way to find itself without asking an external router. By adding our IP and hostname to the /etc/hosts file, we are creating a local map. It means you are telling the system: "Don't go outside to ask anyone; I'm telling you right here that this name belongs to this IP".
+
+This ensures that the server can always resolve its own name to its IP address—even before the full DNS service is up and running. If FreeIPA tries to start and the server can't find itself, the installation will fail. It's essentially giving the machine a mirror so it can confirm its own identity.
+
+Right now the IP for my master server is 10.0.0.3 and the line I wrote on the file was this:
+
+![](17.png)
+
+<br/>
+
+You're probably wondering why I put "ipa1" at the end of the line. The purpose of it is just as a shothard for the server, so if you type something like "$ ping ipa1" it will work because it still means the full address (ipa1.lab.local).
+
+
+Now we need to do a ping to the machine itself, so make sure that when u do **$ ping ipa1** it works. After that, make sure that the file **resolv.conf** inside **/etc/** is the same as the photo:
+
+![](19.png)
+
+<br>
+
+The reason we use these external DNS addresses is that we are still in the pre-installation phase. Since the FreeIPA DNS service isn't running yet, pointing the server to its own IP would leave it unable to resolve web addresses, preventing it from downloading the packages required for the installation.
+
+Now we have to install the 
+
