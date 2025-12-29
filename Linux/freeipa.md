@@ -1,6 +1,6 @@
 # FreeIPA server on Linux
 ### Introduction
-What you're expecting is some kind of step-by-step tutorial for an OpenLDAP server but I won't do that. The main reason we are here is to learn what is an FreeIPA server and how to create our own lab to work on.
+What you're expecting is some kind of step-by-step tutorial for a FreeIPA server but I won't do that. The main reason we are here is to learn what is an FreeIPA server and how to create our own lab to work on.
 
 The things we are going to do here:
 - A virtual router
@@ -126,7 +126,7 @@ In this part I'm going to create a DHCP server but what exactly is DHCP?
 
 DHCP (Dynamic Host Configuration Protocol) is the service responsible for automatically giving devices on a network the information they need to connect and communicate. Instead of configuring every computer manually, a DHCP server assigns important settings such as the IP address, subnet mask, gateway, and DNS servers as soon as a device joins the network.
 
-When a client connects, it sends out a broadcast request asking for network configuration. The DHCP server listens for that request and responds with a lease — a temporary set of network parameters the client can use. This makes network management simpler, prevents IP conflicts, and allows devices to join the network instantly without any manual setup.
+When a client connects, it sends out a broadcast request asking for network configuration. The DHCP server listens for that request and responds with a lease, a temporary set of network parameters the client can use. This makes network management simpler, prevents IP conflicts, and allows devices to join the network instantly without any manual setup.
 
 In short, DHCP is what allows your devices to “plug in and work” by automatically configuring their network settings.
 
@@ -232,7 +232,7 @@ You can think of FreeIPA as the Linux equivalent of Active Directory. It is an o
 
 **Why use a Centralized Domain?**
 
-In a standard environment, every server acts as an island—passwords are stored locally, and each machine must be managed individually. This creates massive administrative overhead and security risks. IdM solves this by creating a unified Linux domain where all information is stored in one place and applied uniformly to every machine.
+In a standard environment, every server acts as an island, passwords are stored locally, and each machine must be managed individually. This creates massive administrative overhead and security risks. IdM solves this by creating a unified Linux domain where all information is stored in one place and applied uniformly to every machine.
 
 <br/>
 
@@ -290,7 +290,7 @@ Right now the IP for my master server is 10.0.0.3 and the line I wrote on the fi
 You're probably wondering why I put "ipa1" at the end of the line. The purpose of it is just as a shothard for the server, so if you type something like "$ ping ipa1" it will work because it still means the full address (ipa1.lab.local).
 
 
-Now we need to do a ping to the machine itself, so make sure that when u do **$ ping ipa1** it works. After that, make sure that the file **resolv.conf** inside **/etc/** is the same as the photo:
+Now we need to do a ping to the machine itself, so make sure that when u do **"$ ping ipa1"** it works. After that, make sure that the file **resolv.conf** inside **/etc/** is the same as the photo:
 
 ![](../images/19.png)
 
@@ -303,7 +303,7 @@ Now we have to install the necessary code from the repositories. We require this
       # yum install ipa-server ipa-server-dns -y
 
 
-The reason for by adding **ipa-server-dns* is that we are telling CentOS to also download the components needed to manage our own DNS records (the BIND service).
+The reason for by adding **ipa-server-dns** is that we are telling CentOS to also download the components needed to manage our own DNS records (the BIND service).
 
 However, simply downloading the software isn't enough to make it work. Think of the first command as getting the tools, and the second command as building the house. We must run **ipa-server-install** to actually configure the domain, set up security certificates, and turn the machine into a functional Domain Controller. So we have to use this:
 
@@ -355,3 +355,36 @@ By running the command kinit admin, you are officially logging into the FreeIPA 
 Behind the scenes, the server grants you a Ticket Granting Ticket (TGT). Think of it as a "VIP wristband." Once you have it, you can access and manage different areas of the server for the next several hours without having to re-type your password every few minutes.
 
 This step is the ultimate test for your setup. If kinit admin works, it proves that your DNS, Firewall, and Kerberos service are all perfectly synchronized. Your FreeIPA server is now fully operational and ready for action.
+
+Now that you have your Kerberos ticket, you should verify that the two most important parts of the server—the LDAP Directory and the Web Interface—are actually working.
+
+For this we are going to use the next two commands respectively:
+
+      # lapwhoami -x -D "cn=Directory Manager" -W -H ldap://ipa1.lab.local
+      # curl -k https://ipa1.lab.local/ipa/ui/
+
+
+The first command is a direct test for the server's database. It asks the system to identify the current user using the Directory Manager credentials. If it returns your "dn" (Distinguished Name) correctly, it means the database is online, healthy, and recognizing your administrative password.
+
+The second one checks if the web management console is active and reachable. We use curl to "knock on the door" of the login page. The -k flag is used to skip security warnings since we are using local certificates. If there is no "connection refused" error, the web interface is ready for you to use in a browser.
+
+Now we have the first machine done. Next step is to make a replica (you can actually make the first machine you want to do. If it's the replica, go for it. If it's the client, again, go for it).
+
+Ah, I forgot to tell you. Before you create the client or the replica, you have to do an adjustment in the file **chrony.conf** inside the dir. **/etc/** (again etc, I know it's a bit annoying but lot of things are right there :/ )
+
+Do the same in your machine like the photo next:
+
+![](../images/32.png)
+
+<br/>
+
+When setting up a FreeIPA replica, one of the most common errors is time desynchronization. This happens because FreeIPA relies on Kerberos, a security protocol that requires all servers to have almost identical clocks, usually within a 5-minute window. If the time is different, the replica will fail to join the master.
+
+To fix this, we aren't just adjusting a clock; we are telling the main server to act as a dedicated NTP (Network Time Protocol) server for the local network. Just as the Master is already the "source of truth" for DNS, it will now become the "source of truth" for Time.
+
+By editing the **/etc/chrony.conf** file, we enable specific behaviors in the NTP protocol:
+- **Becoming the NTP Server:** By adding allow 10.0.0.0/24, you transform your Master into an NTP authority for your entire subnet.
+- **Trusting the LAN:** Instead of just being a client that gets time from the internet, the server now "serves" the time to any machine starting with 10.0.0.x.
+- **The "Master Clock" Strategy:** The replica no longer needs to reach out to random servers on the internet; it syncs directly with your Master.
+- **Perfect Harmony for Kerberos:** Because the replica pulls its time directly from the Master via the NTP protocol, their clocks will be perfectly synchronized to the millisecond.
+
