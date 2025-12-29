@@ -109,11 +109,14 @@ After this, we simply apply the updated system parameters without needing to reb
 
       $ sudo sysctl -p
 
+<br/>
 
 Next, we need to create an iptables rule that allows packets from the servers (we will create them after this) to reach the external network and receive responses back through the router. In other words, we want the router to perform NAT so that internal devices can access the outside network using the router’s external IP address. To do this, we add the following rule and we keep it permanent (remember to install **iptables-persistent** to use netfilter-persistent):
             
       $ sudo iptables -t nat -A POSTROUTING -o enp0s3 -j SNAT --to-source 192.168.1.100
       $ sudo netfilter-persistent save
+
+<br/>
 
 And now we have our own router and LAN, making everything posible thanks to the magic of the NAT technique.
 
@@ -145,16 +148,20 @@ The network configuration is going to be this one:
 
 ![](../images/7.png)
 
+<br/>
 
 Next, we will install the ISC DHCP server software (developed by the open-source organization ISC) so that we can begin configuring our DHCP server.
 
       $ sudo apt update
       $ sudo apt install isc-dhcp-server -y
 
+<br/>
+
 If you want to look at the status of the service you could use this command:
 
       $ sudo systemctl status isc-dhcp-server
 
+<br/>
 
 After installing the software, we need to configure the server so that it can start assigning dynamic IP addresses to devices on the network. To do this, we will edit the dhcpd.conf file located in the /etc/dhcp directory, where all the main settings for the DHCP server are defined, including the IP address range, subnet mask, gateway, and DNS servers. This configuration file is essential because it tells the server how to manage and distribute network settings to clients automatically.
 
