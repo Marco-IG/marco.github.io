@@ -178,7 +178,7 @@ At the end of the configuration file, we add the following lines:
 
 ![](../images/8.png)
 
-
+<br/>
 
 This block defines the DHCP settings for your internal network:
 1. **subnet 10.0.0.0 netmask 255.255.255.0** specifies the network where the DHCP server will assign IPs.
@@ -212,12 +212,15 @@ After this, we will configure a new entry in the dhcpd.conf file located in /etc
         option subnet-mask 255.255.255.0;
       }
 
+<br/>
+
 This line in the dhcpd.conf file creates a static IP reservation. The host client block tells the DHCP server that the device named "client" should receive a special configuration. The server uses the device’s MAC address (hardware ethernet) to uniquely identify it. When the client connects, the server always assigns it the same predefined IP address (fixed-address 10.0.0.55) instead of an address from the dynamic range.
 
 Lo último que deberíamos hacer es resetear el servicio y la máquina, y tras esto ya tendríamos el cliente con su nueva IP. Para resetear el servicio:
       
       $ sudo systemctl restart isc-dhpc-service
 
+<br/>
 
 I'm not going to show anything related to the fixed IP because it's not necessary for the FreeIPA, but you got to know that even if you configure the IP of the client manually or you put it on automatic, you should fix the address in the DHCP server, so it won't produce erros or problems if any other device recive the same IP. Just as advice.
 
@@ -309,12 +312,15 @@ Now we have to install the necessary code from the repositories. We require this
 
       # yum install ipa-server ipa-server-dns -y
 
+<br/>
 
 The reason for by adding **ipa-server-dns** is that we are telling CentOS to also download the components needed to manage our own DNS records (the BIND service).
 
 However, simply downloading the software isn't enough to make it work. Think of the first command as getting the tools, and the second command as building the house. We must run **ipa-server-install** to actually configure the domain, set up security certificates, and turn the machine into a functional Domain Controller. So we have to use this:
 
       # ipa-server-install
+
+<br/>
 
 It will execute a script providing an interactive setup for the IPA server and it will ask a series of questions, and after answering them, you should end up with something like this:
 
@@ -336,6 +342,8 @@ After the configuration finish, one message is going to prompt to us via termina
 
       # firewall-cmd --add-service=freeipa-4 --permanent
       # firewall-cmd --reload
+
+<br/>
 
 The ports we are opening are this ones: Kerberos, HTTP, HTTPS, DNS, LDAP and LDAPS.
 
@@ -370,6 +378,7 @@ For this we are going to use the next two commands respectively:
       # lapwhoami -x -D "cn=Directory Manager" -W -H ldap://ipa1.lab.local
       # curl -k https://ipa1.lab.local/ipa/ui/
 
+<br/>
 
 The first command is a direct test for the server's database. It asks the system to identify the current user using the Directory Manager credentials. If it returns your "dn" (Distinguished Name) correctly, it means the database is online, healthy, and recognizing your administrative password.
 
@@ -405,6 +414,7 @@ In the file **resolv.conf** we are going to write this few things:
       search lab.local
       nameserver 10.0.0.3
 
+<br/>
 
 I decided not to add the replica's IP to the DNS settings yet because the services aren't installed yet, so it’s better to let the machine point only to the Master for now. Once the installation is finished, we can add the replica's own IP as a secondary DNS source right after the Master's IP. This setup is what gives us High Availability: if the Master ever fails or goes offline, the replica can step in and handle the requests itself so the network doesn't go down.
 
@@ -412,11 +422,13 @@ The next thing we have to do is install chrony to syncronize the times between "
 
       # yum install chrony -y
 
+<br/>
 
 After the installation we have to open up the file **chrony.conf** inside the dir. **etc** and write down this line at the end of the file:
 
       server 10.0.0.3 iburst
 
+<br/>
 
 In the replica's configuration, adding server 10.0.0.3 iburst tells ipa2 to use the Master server as its primary source of time through the NTP protocol. The iburst option is key because it forces a quick synchronization right at startup, ensuring the clocks match perfectly before the installation begins. This is mandatory because Kerberos will block the replica from joining the domain if its clock is even slightly different from the Master's.
 
@@ -431,12 +443,14 @@ We are going to use this to commands to add the lines:
       # ipa dnsrecord-add lab.local ipa2 --a-rec 10.0.0.4
       # ipa dnsrecord-add 0.0.10.in-addr.arpa 4 --ptr-rec ipa2.lab.local.
 
+<br/>
 
 After adding the lines, we have to open the ports in the replica because it will be necessary to copy everything from the master to the replica. Just use the previous command for the master:
 
       # firewall-cmd --add-service=freeipa-4 --permanent
       # firewall-cmd --reload
 
+<br/>
 
 Now we can do the duplication of the master into the replica, just use this command and everything will be fine:
 
@@ -459,6 +473,7 @@ The installation will begin unattended thanks to the option we used (--unattende
 
       # ipa-replica-conncheck --replica ipa1.lab.local
 
+<br/>
 
 Last thing we should do is add the IP of the master again in the slave resolv.conf file, because it is necessary for domain consistency, so the lines should look like this in the slave:
 
