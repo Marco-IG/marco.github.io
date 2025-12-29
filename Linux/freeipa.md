@@ -378,7 +378,7 @@ Do the same in your machine like the photo next:
 
 <br/>
 
-When setting up a FreeIPA replica, one of the most common errors is time desynchronization. This happens because FreeIPA relies on Kerberos, a security protocol that requires all servers to have almost identical clocks, usually within a 5-minute window. If the time is different, the replica will fail to join the master.
+When setting up a FreeIPA replica, one of the most common errors is time desynchronization. This happens because FreeIPA relies on Kerberos, a security protocol that requires all servers to have almost identical clocks, usually within a 5 minute window. If the time is different, the replica will fail to join the master.
 
 To fix this, we aren't just adjusting a clock; we are telling the main server to act as a dedicated NTP (Network Time Protocol) server for the local network. Just as the Master is already the "source of truth" for DNS, it will now become the "source of truth" for Time.
 
