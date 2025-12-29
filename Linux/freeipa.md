@@ -298,9 +298,47 @@ Now we need to do a ping to the machine itself, so make sure that when u do **$ 
 
 The reason we use these external DNS addresses is that we are still in the pre-installation phase. Since the FreeIPA DNS service isn't running yet, pointing the server to its own IP would leave it unable to resolve web addresses, preventing it from downloading the packages required for the installation.
 
-Now we have to install the software. We require this command for it:
+Now we have to install the necessary code from the repositories. We require this command for it:
 
       # yum install ipa-server ipa-server-dns -y
 
 
-The reason for this is that we are going to install the server with an integrated DNS and CA.
+The reason for by adding **ipa-server-dns* is that we are telling CentOS to also download the components needed to manage our own DNS records (the BIND service).
+
+However, simply downloading the software isn't enough to make it work. Think of the first command as getting the tools, and the second command as building the house. We must run **ipa-server-install** to actually configure the domain, set up security certificates, and turn the machine into a functional Domain Controller. So we have to use this:
+
+      # ipa-server-install
+
+It will execute a script providing an interactive setup for the IPA server and it will ask a series of questions, and after answering them, you should end up with something like this:
+
+![](../images/22.png)
+
+<br/>
+
+As you can see we just setup lot of things importante for the server, These things are: 
+
+- **Hostname and IP:** The server is officially identified as ipa1.lab.local at the static IP 10.0.0.3.
+- **Domain and Realm:** We have established lab.local as our DNS domain and LAB.LOCAL as our Kerberos Realm (used for authentication).
+- **Certificate Authority (CA):** The server is now its own CA, allowing it to issue digital certificates to secure communications within the domain.
+- **DNS Forwarders:** It is configured to use 8.8.8.8 and 8.8.4.4. This means if the server doesn't know a web address, it will ask Google's DNS.
+- **NTP Synchronization:** The server will sync its time with the pool.ntp.org servers, which is critical because Kerberos authentication fails if the time is not exact.
+- **Reverse Zone:** It automatically created a reverse DNS zone (0.0.10.in-addr.arpa), which allows the network to translate IPs back into names."
+
+
+After the configuration finish, one message is going to prompt to us via terminal saying that we need to open some ports for the server to work properly. We are going to use this commands to open them so the firewall don't put as in trouble:
+
+      # firewall-cmd --add-service=freeipa-4 --permanent
+      # firewall-cmd --reload
+
+The ports we are opening are this ones: Kerberos, HTTP, HTTPS, DNS, LDAP and LDAPS.
+
+We could check the ports with this command:
+
+      # firewall-cmd --list-all
+
+![](../images/24.png)
+
+<br/>
+
+As you can notice in the photo everything works fine.
+
