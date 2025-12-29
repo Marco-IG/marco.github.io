@@ -283,7 +283,7 @@ This ensures that the server can always resolve its own name to its IP addressâ€
 
 Right now the IP for my master server is 10.0.0.3 and the line I wrote on the file was this:
 
-![](17.png)
+![](../images/17.png)
 
 <br/>
 
@@ -292,11 +292,15 @@ You're probably wondering why I put "ipa1" at the end of the line. The purpose o
 
 Now we need to do a ping to the machine itself, so make sure that when u do **$ ping ipa1** it works. After that, make sure that the file **resolv.conf** inside **/etc/** is the same as the photo:
 
-![](19.png)
+![](../images/19.png)
 
 <br>
 
 The reason we use these external DNS addresses is that we are still in the pre-installation phase. Since the FreeIPA DNS service isn't running yet, pointing the server to its own IP would leave it unable to resolve web addresses, preventing it from downloading the packages required for the installation.
 
-Now we have to install the 
+Now we have to install the software. We require this command for it:
 
+      # yum install ipa-server ipa-server-dns -y
+
+
+The reason for this is that we are going to install the server with an integrated DNS and CA.
