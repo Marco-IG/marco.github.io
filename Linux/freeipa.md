@@ -216,4 +216,63 @@ I'm not going to show anything related to the fixed IP because it's not necessar
 
 
 ### FreeIPA Server
-Now we are going to create our IPA server. We need CentOS because IPA has better compatibility with this distro rather than with Ubuntu server.
+We will now begin the deployment of our FreeIPA server. We have selected CentOS for this environment, as FreeIPA offers better native compatibility and a more robust integration path compared to Ubuntu Server (you can obtain the CentOS 10 ISO from the official repository here: https://www.centos.org/download/).
+Before proceeding with the configuration, let’s review the network topology. We will be provisioning three virtual machines within our private LAN:
+1. IPA Master Server
+2. IPA Replica Node
+3. Client Node"
+
+<br/>
+
+**Understanding IdM and FreeIPA**
+
+You can think of FreeIPA as the Linux equivalent of Active Directory. It is an open-source Identity Management (IdM) solution that centralizes authentication, authorization, and policy enforcement.
+
+<br/>
+
+**Why use a Centralized Domain?**
+
+In a standard environment, every server acts as an island—passwords are stored locally, and each machine must be managed individually. This creates massive administrative overhead and security risks. IdM solves this by creating a unified Linux domain where all information is stored in one place and applied uniformly to every machine.
+
+<br/>
+
+**How it Works?**
+
+The architecture is built on three core pillars:
+1. **LDAP:** The directory service that stores all user, group, and policy data.
+2. **Kerberos:** The engine for Single Sign-On (SSO). Once a user authenticates, they can access any service in the domain without re-entering their credentials.
+3. **Integrated Services:** The server also manages DNS for service discovery and a Certificate Authority (CA) for secure communication.
+
+<br/>
+
+**The Role of Clients**
+
+IdM Clients are machines enrolled in the domain to receive these identities and policies. While the domain is Linux-native (meaning it does not support Windows clients directly), it can be integrated with existing Active Directory environments to share identities across your entire enterprise.
+
+
+So now we know what is FreeIPA and its relation with IdM and RedHat.
+
+For now, we will focus on the installation. Ensure that you configure the network settings during the initial setup. While you can choose your own partitioning and system settings, make sure your network adapter is set to Internal Network (or Host-Only) to isolate the traffic within your lab.
+
+Once the OS is installed and you have logged in, our first task on the Master Server is to update the hostname. For this guide, I will use ipa1.lab.local.
+
+I am using .local because of specific restrictions regarding Top-Level Domains (TLDs). Using reserved names like localhost or public domains like example.com can cause conflicts. For more details, see (https://datatracker.ietf.org/doc/html/rfc2606).+
+
+
+Why do we have to change the hostname?
+
+Well, the reason is clear: In a domain, your machine needs a full identity.
+
+To understand this, think of the hostname as the "first name" of your computer (example: ipa1) and the domain as its "last name" or "neighborhood" (example: lab.local). When you put them together, you get the FQDN (Fully Qualified Domain Name): ipa1.lab.local.
+
+
+In FreeIPA, this relationship is vital because:
+
+- **It’s like an ID Card:** FreeIPA uses a system called Kerberos to handle logins. Kerberos is very strict; it doesn't recognize machines by their IP addresses, only by their full names (FQDN). If the name is wrong, you can't log in.
+
+- **DNS is the Foundation:** FreeIPA acts as a phonebook for your network. For other machines to find the server and trust it, the server must have a fixed, clear name that doesn't change.
+
+- **Security Certificates:** The server creates security certificates (like digital signatures) to protect your data. These signatures are tied specifically to the hostname. If the name is incorrect, the security system will block the connection.
+
+
+In short, changing the hostname ensures that your server has a unique and permanent identity so the entire network knows exactly who it is talking to.
