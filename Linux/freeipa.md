@@ -526,3 +526,5 @@ If not, add these lines and reset everything with:
 <br/>
 
 If you want to check one more thing, use **kinit** with the admin, or maybe create an user and use it for the kerberos ticket.
+
+Hope you enjoyed the explanation. Give it a try yourself and if you have any questions you can contact me via gmail: marcoibarragomez2@gmail.com
