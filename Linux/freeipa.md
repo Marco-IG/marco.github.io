@@ -494,3 +494,7 @@ If something goes wrong with the NTP, ensure that the configuration on the clien
 If not, add these lines and reset everything with:
 
       # systemctl enable --now chronyd
+
+<br/>
+
+If you want to check one more thing, use **kinit** with the admin, or maybe create an user and use it for the kerberos ticket.
