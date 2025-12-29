@@ -342,3 +342,16 @@ We could check the ports with this command:
 
 As you can notice in the photo everything works fine.
 
+After completing the installation and opening the firewall, the server is "alive," but there is one final step. In FreeIPA, being the "root" user of the machine isn't enough; you must verify your identity with Kerberos, the security system that manages permissions within the domain. We are going to need this commando:
+
+      # kinit admin
+
+![](../images/25.png)
+
+<br/>
+
+By running the command kinit admin, you are officially logging into the FreeIPA realm. The system will ask for the password you created during setup. If it's correct, the cursor will simply move to the next line without an error message. In Linux, this "silence" is the perfect sign: it means your identity was successfully verified.
+
+Behind the scenes, the server grants you a Ticket Granting Ticket (TGT). Think of it as a "VIP wristband." Once you have it, you can access and manage different areas of the server for the next several hours without having to re-type your password every few minutes.
+
+This step is the ultimate test for your setup. If kinit admin works, it proves that your DNS, Firewall, and Kerberos service are all perfectly synchronized. Your FreeIPA server is now fully operational and ready for action.
