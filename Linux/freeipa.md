@@ -388,3 +388,16 @@ By editing the **/etc/chrony.conf** file, we enable specific behaviors in the NT
 - **The "Master Clock" Strategy:** The replica no longer needs to reach out to random servers on the internet; it syncs directly with your Master.
 - **Perfect Harmony for Kerberos:** Because the replica pulls its time directly from the Master via the NTP protocol, their clocks will be perfectly synchronized to the millisecond.
 
+
+Now we are going with the replica. After setting the hostname to ipa2.lab.local, I updated the /etc/hosts file to include both the master and the replica. This step is essential because it ensures that when the machines try to communicate, they don't get lost; by mapping ipa1.lab.local to 10.0.0.3 and the replica itself to 10.0.0.4, the system knows exactly where to find each server on the network without needing an external DNS.
+
+![](../imagesm/36.png)
+
+In the file **resolv.conf** we are going to write this few things:
+
+      search lab.local
+      nameserver 10.0.0.3
+
+
+I decided not to add the replica's IP to the DNS settings yet because the services aren't installed yet, so it’s better to let the machine point only to the Master for now. Once the installation is finished, we can add the replica's own IP as a secondary DNS source right after the Master's IP. This setup is what gives us High Availability: if the Master ever fails or goes offline, the replica can step in and handle the requests itself so the network doesn't go down.
+
