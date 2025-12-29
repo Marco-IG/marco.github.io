@@ -1,0 +1,10 @@
+# Sections
+
+# Creation of a LAMP server
+Hello guys we are here again and I'm going to teach you about LAMP servers and how to make one yourself.
+But as you're probably wondering, what is a LAMP server? Well, A LAMP stack is basically a bundle of four different tools that work together to run a website. It is the most popular way to set up a web server because it is free, reliable, and very easy to use. Each letter in the name stands for a specific part of the system.
+
+- The L stands for Linux, which is the "brain" or the operating system. It manages everything on the server, just like Windows or macOS does on a laptop. Most people use Debian or Ubuntu for this because they are very stable.
+- The A is for Apache, the web server. Think of it as a waiter in a restaurant. When you type a website address in your browser, Apache "takes your order" and brings the website's files to your screen so you can see them.
+- The M is for MariaDB (or MySQL), which is the database. This is where all the "memory" of the site is kept, like user accounts, passwords, and posts. It keeps everything organized in tables so the server can find information quickly.
+- Finally, the P stands for PHP. This is the language that makes the website do things. It connects the database with the web server to create "dynamic" pages—like when you log into a site and it shows your specific profile instead of a generic page.
