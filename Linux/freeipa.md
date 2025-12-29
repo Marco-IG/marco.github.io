@@ -504,7 +504,13 @@ Later on we have to get the client package pulling it from the repo and the chro
 
 <br/>
 
-After this we use this command and after answering the questions needed we will be connected to the directory and that's it.
+After this we use this next command and after answering the questions needed we will be connected to the directory and that's it.
+
+      # ipa-client-install
+
+![](../images/34.png)
+
+<br>
 
 If something goes wrong with the NTP, ensure that the configuration on the client is correct and check that the chrony.conf file has the source pointing to both servers, the master and its replica. It should contain this two lines:
 
