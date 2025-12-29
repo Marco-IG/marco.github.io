@@ -12,4 +12,5 @@ Let’s start exploring Linux together.
 <br/><br/>
 
 # Sections
-- [Creation of a Linux FreeIPA server](./freeipa.md)
+- [FreeIPA server](./freeipa.md)
+- [LAMP server](./lamp.md)
