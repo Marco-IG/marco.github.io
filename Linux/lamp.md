@@ -17,4 +17,12 @@ After reading all this text let's begin with the LAMP. We just require the virtu
 
 I won't stop at the installation of the server but this are the network config. that I will be using on this server:
 
-    - 
+For enp0s3 (the bridged adapter):
+      
+      --> Subnet: 10.0.0.0/24
+  
+      --> Address: 10.0.0.
+  
+      --> Gateway: 192.168.1.1
+  
+      --> Name servers: 8.8.8.8, 8.8.4.4
