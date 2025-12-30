@@ -59,3 +59,10 @@ By default, a fresh MariaDB installation includes settings that are helpful for 
 <br/>
 
 Once you run the script, an interactive assistant will guide you through several prompts. Here is what you should choose and why:
+- **Enter current password for root (enter for none):** Press Enter. A fresh MariaDB installation does not assign a root password yet, so leaving this blank is expected.
+- **Switch to unix_socket authentication? [Y/n]:** Type n. This keeps the traditional password-based authentication instead of tying the root login to the system user via the Unix socket. Using a password gives you more flexibility—especially in labs, VMs, or remote environments—because you can log in as root without depending on the Linux user account.
+- **Change the root password? [Y/n]:** Type Y and set a strong and memorable root password. This step is crucial: the root user has full control over all databases, so setting a password ensures that only authorized users can access administrative features.
+- **Remove anonymous users? [Y/n]:** Type Y. Anonymous accounts allow anyone on the system to log into the database without a username. This is convenient for testing but extremely insecure. Removing them closes a common attack vector.
+- **Disallow root login remotely? [Y/n]:** Type Y. Preventing remote root logins ensures that the most privileged account can only be used locally. This reduces the risk of brute-force attempts or credential theft through the network.
+- **Remove test database and access to it? [Y/n]:** Type Y. MariaDB ships with a test database that is accessible to all users by default. Removing it prevents low-privileged users from storing or executing unwanted code in an uncontrolled area.
+- **Reload privilege tables now? [Y/n]:** Type Y. This reloads all privilege rules so your changes take effect immediately without restarting the database server.
