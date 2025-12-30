@@ -114,5 +114,5 @@ This rule will make our PC reach the web server and after this we just have to p
 
       http://192.168.1.100:8080
 
-![]()
+![](../images/lamp/1.png)
 
