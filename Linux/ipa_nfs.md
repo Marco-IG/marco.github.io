@@ -16,3 +16,4 @@ Rather than managing users locally on each system, identities will be defined on
 Additionally, privileged command execution will be centrally managed using FreeIPA’s sudo policy framework, eliminating the need to manually configure access rules on individual machines. This approach not only simplifies system administration but also enhances security by providing consistent policy enforcement across the entire infrastructure.
 
 By the end of this project, the FreeIPA deployment will evolve from a simple authentication service into a centralized access control system capable of managing user identities, host access, and administrative privileges across a multi-host Linux environment.
+
