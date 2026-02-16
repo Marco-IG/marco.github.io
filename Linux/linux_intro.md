@@ -13,5 +13,11 @@ Let’s start exploring Linux together.
 
 # Sections
 - [Virtual router + DHCP + FreeIPA Server installation](./freeipa.md)
+
+</br>
+
 - [LAMP server](./lamp.md)
+  
+</br>
+
 - [FreeIPA Server + NFS Server + Client](./ipa_nfs.md)
