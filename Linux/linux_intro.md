@@ -20,4 +20,4 @@ Let’s start exploring Linux together.
   
 </br>
 
-- [FreeIPA Server + NFS Server + Client](./ipa_nfs.md)
+- [IAM (FreeIPA) architecture within Linux infraestructure](./ipa_nfs.md)
