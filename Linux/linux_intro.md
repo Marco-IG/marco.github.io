@@ -12,5 +12,5 @@ Let’s start exploring Linux together.
 <br/><br/>
 
 # Sections
-- [FreeIPA server](./freeipa.md)
+- [Virtual router + DHCP + FreeIPA server](./freeipa.md)
 - [LAMP server](./lamp.md)
